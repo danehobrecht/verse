@@ -2,7 +2,7 @@
 VERSE_LIB = debian/verse/usr/share/verse/
 VERSE_NAME = daily.verse
 BIN_DIR = debian/verse/usr/bin
-CFLAGS = -Wall -g -O2 -ansi $(shell dpkg-buildflags --get CFLAGS)
+CFLAGS = -Wall -g -O2 --std=c99 $(shell dpkg-buildflags --get CFLAGS)
 CPPFLAGS = $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 MAN_DIR = debian/verse/usr/share/man/man1
