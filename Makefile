@@ -1,24 +1,31 @@
-# The location of the verses
-VERSE_LIB = debian/verse/usr/share/verse/
+# Agnostic
 VERSE_NAME = daily.verse
-BIN_DIR = debian/verse/usr/bin
-CFLAGS = -Wall -g -O2 --std=c99 $(shell dpkg-buildflags --get CFLAGS)
+CCFLAGS = -Wall -g -O2 --std=c99 $(shell dpkg-buildflags --get CFLAGS)
 CPPFLAGS = $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
-MAN_DIR = debian/verse/usr/share/man/man1
-CC ?= gcc
+MC ?= gcc
 
-all : verse
+# Debian
+#VERSE_LIB = debian/verse/usr/share/verse/
+#BIN_DIR = debian/verse/usr/bin
+#MAN_DIR = debian/verse/usr/share/man/man1
 
-clean :
+# Mac
+VERSE_LIB = /opt/homebrew/share/verse/
+BIN_DIR = /opt/homebrew/bin
+MAN_DIR = /opt/homebrew/share/man/man1
+
+all: verse
+
+clean:
 	rm -f verse *~
 
-distclean : clean
+distclean: clean
 
-verse : verse.c
+verse: verse.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -DVERSE_LIB=\"$(VERSE_LIB)$(VERSE_NAME)\" -o verse verse.c
 
-install : verse $(VERSE_NAME)
+install: verse $(VERSE_NAME)
 	install -m 755 -d $(BIN_DIR)
 	install -m 755 verse $(BIN_DIR)
 	install -m 755 -d $(VERSE_LIB)

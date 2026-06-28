@@ -1,14 +1,15 @@
 /* This is a Program to read a database and produce a daily scriptural verse
  * It expects the Database in VERSE_LIB (defined in Makefile)
  *
- * 0.12 May 11 2026 Refactor
+ * 0.12 May 11 2026 Refactor to C99
  * 0.11 Feb 4 1995 Fixed bug with wrong month calculation
  *
  * Originally written by Christoph Lameter, December 12, 1994
  * Christoph.Lameter@f961.n102.z1.fidonet.org or clameter@netcom.com (will soon expire)
+ *
  * Refactored by Dane Hobrecht, May 11, 2026
  * dhobrech@uci.edu
- * 
+ *
  * Copyright: GPL
  */
 
@@ -30,11 +31,13 @@ int main(int argc, char **argv)
 	/* Compose String to look for */
 	(void) time(&now);
 	local_time = localtime(&now);
+
 	sprintf(sstring, "R%02d%02d", local_time->tm_mon + 1, local_time->tm_mday);
 	if (argc != 1) {
 		fputs("verse takes no arguments!\n", stderr);
 		exit(1);
 	}
+
 	f = fopen(VERSE_LIB, "r");
 	if (f == NULL) {
 		fputs("Cannot find Verse Library:" VERSE_LIB "\n", stdout);
@@ -50,6 +53,7 @@ int main(int argc, char **argv)
 	/* Read file into memory */
 	file_text = malloc(bytes + 1);
 	file_text[bytes] = 0;  // End Marker
+
 	if (fread(file_text, sizeof(char), bytes, f) != bytes) {
 		fprintf(stderr,"Cannot read %d bytes from versefile\n", bytes);
 		exit(1);
